@@ -1,8 +1,3 @@
-CREATE TABLE Country (
-    Name CHAR(20),
-    Geographic_Location CHAR (20),
-    PRIMARY KEY (Name, Geographic_Location)
-);
 
 CREATE TABLE Climate_Metrics(
     Country_Name CHAR(20),
@@ -12,8 +7,14 @@ CREATE TABLE Climate_Metrics(
     Wind_Speed FLOAT, 
     Precipitation FLOAT, 
     CO2_Emissions FLOAT, 
-    Sea_Level_Rise FLOAT
+    Sea_Level_Rise FLOAT,
     PRIMARY KEY (Country_Name, Year_Recorded)
+);
+
+CREATE TABLE Country (
+    Name CHAR(20),
+    Geographic_Location CHAR (20),
+    PRIMARY KEY (Name, Geographic_Location)
 );
 
 CREATE TABLE Natural_Disaster(
@@ -22,7 +23,7 @@ CREATE TABLE Natural_Disaster(
     Country_Name CHAR(20), 
     Year_Recorded INT,
     PRIMARY KEY (Disaster_Year, Type)
-    FOREIGN KEY (Country_Name, Year_Recorded) REFERENCES Climate_Metrics(Country_Name, Year_Recorded)
+    FOREIGN KEY (Country_Name, Year_Recorded) REFERENCES Climate_Metrics(Country Name, Year_Recorded)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
@@ -68,5 +69,25 @@ CREATE TABLE Economic_Damages(
         ON UPDATE CASCADE
 );
 
+CREATE TABLE Socio_Economic_Damages(
+    GDP FLOAT,
+    GDP_Per_Capita FLOAT,
+    Population_Density FLOAT,
+    Social_Support FLOAT,
+    Unemployment_Rate FLOAT,
+    Name CHAR(20) NOT NULL,
+    GeographicLocation CHAR(20) NOT NULL,
+    Country_Name CHAR(20),
+    Disaster_Type CHAR(20), 
+    Year INT,
+    PRIMARY KEY (Country_Name, Disaster_Type, Year), 
+    FOREIGN KEY (Name, Geographic_Location) REFERENCES Country(Name, Geographic_Location)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+    UNIQUE (Country_Name, Disaster_Type, Year)
+    FOREIGN KEY (Country_Name, Disaster_Type, Year) REFERENCES Damages(Country_Name, Disaster_Type, Year)
+        ON DELETE NO ACTION
+        ON UPDATE CASCASE
+);
 
 
